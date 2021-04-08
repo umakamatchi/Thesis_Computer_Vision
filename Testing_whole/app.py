@@ -11,6 +11,9 @@ import tempfile
 from preprocessing.boundingboxes import BoundingBoxes
 from preprocessing.prediction import prediction
 
+
+from preprocessing.ocr import ocr
+
 try:
 	st.title('Vehicle Color and Type Classification')
 	vehicleOption = st.sidebar.selectbox(
@@ -22,10 +25,10 @@ try:
 		['Red','White','Blue','Yellow','Black','Gray'])
 	progress_bar = st.progress(0)
 	#upload multiple images	
-	file = st.file_uploader("Please upload an image file", type=["jpg", "png"],accept_multiple_files=True)
+	file = st.file_uploader("Please upload image files for type and color detection", type=["jpg", "png"],accept_multiple_files=True,key="1")
 	Resized_data = []
 	Normal_data = []
-	if st.button('Submit'):		
+	if st.button('Submit',key="1"):		
 		if len(file)>0:		
 			#Process uploaded images
 			#Get Raw images for bounding box
@@ -43,7 +46,7 @@ try:
 				Resized_data.append(imageArray)		
 				Normal_data.append(notResizedArray)			
 			#Set numpy collection objects
-			notResizedData=np.array(Normal_data)
+			notResizedData=np.array(Normal_data, dtype="object")
 			data=np.array(Resized_data)
 			data2=np.array(Resized_data)
 			progress_bar.progress(15)
@@ -56,13 +59,13 @@ try:
 			bounded_image_index=[]
 			if(len(colorResults)>0):
 				progress_bar.progress(35)
-				st.info("Found " + str(len(colorResults)) +" "+ colorOption + " objects.")
+			#st.info("Found " + str(len(colorResults)) +" "+ colorOption + " objects.")
 				p2=PreProcess()
 				st.info("Processing Vehicle Type : "+ vehicleOption)
 				#Process Vehicle Type
 				vehicleTypeResults = p2.processType(data2,vehicleOption)			
 				if(len(vehicleTypeResults)>0):				
-					st.info("Found " + str(len(vehicleTypeResults)) +" " + vehicleOption + " objects.")				
+				#st.info("Found " + str(len(vehicleTypeResults)) +" " + vehicleOption + " objects.")				
 					progress_bar.progress(65)
 					for colorPredict in colorResults:
 						for vehicleTypePredict in vehicleTypeResults:						
@@ -84,5 +87,30 @@ try:
 except:
 	st.error("Unexpected error:", sys.exc_info()[0])		
 	progress_bar.progress(0)
+
+plateoption = st.sidebar.selectbox(
+		'Choose license Plate No',
+		['WH12DE1433','HR26DA2330'])
+#upload multiple images	
+file2 = st.file_uploader("Please upload an image file for license plate detection", type=["jpg", "png"],accept_multiple_files=True,key="2")
+
+if st.button('Submit',key="2"):		
+		if len(file2)>0:		
+			#Process uploaded images
+			#Get Raw images for bounding box
+			#Get preprocessed image collection for prediction
+			for uploaded_file in file2:			
+				tfile = tempfile.NamedTemporaryFile(delete=False)
+				tfile.write(uploaded_file.read())		
+				img = cv2.imread(tfile.name)
+				licenseplate=ocr()
+				licenseplate.license(img,plateoption)
+		else:
+			st.warning("Please upload images")
+				
+				
+		
+
+
 
 
