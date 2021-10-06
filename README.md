@@ -14,7 +14,9 @@ Phase 3:
 Deep learning OCR is being investigated to convert license plate information to text. The extracted text information is compared to the message itself after the color and type of the vehicle have first been cleared for further comparison to the emergency message. Application developed to test all classification and detection models when user-input values are compared to a set of test images.
 
 Publications:
+
 U. K. K. Pillai and D. Valles, “Vehicle Type and Color Classification and Detection for Amber and Silver Alert Emergencies Using Machine Learning,” 2020 IEEE International IoT, Electronics, and Mechatronics Conference (IEMTRONICS), Vancouver, BC, Canada, 2020, pp. 1-5, doi: 10.1109/IEMTRONICS51293.2020.9216368.
+
 U. K. K. Pillai and D. Valles, “An Initial Deep CNN Design Approach for Identification of Vehicle Color and Type for Amber and Silver Alerts,” 2021 11th Annual Computing and Communication Workshop and Conference (CCWC), NV, USA, 2021, pp. 0903-0908, doi: 10.1109/CCWC51732.2021.9375917.
 
 Poster:
